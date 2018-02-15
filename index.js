@@ -48,19 +48,19 @@ function createCubes(slice) {
         total += slice[zeroSlice].row[zeroRow].column[zeroColumn - 1].value;
     }
 
-    if(slice[zeroSlice].row[zeroRow + 1].column[zeroColumn].value != null){
+    if((slice[zeroSlice].row[zeroRow + 1] != undefined ) && slice[zeroSlice].row[zeroRow + 1].column[zeroColumn].value != null){
         total += slice[zeroSlice].row[zeroRow + 1].column[zeroColumn].value;
     }
 
-    if(slice[zeroSlice].row[zeroRow - 1].column[zeroColumn ].value != null){
+    if((slice[zeroSlice].row[zeroRow - 1] != undefined ) && slice[zeroSlice].row[zeroRow - 1].column[zeroColumn ].value != null){
         total += slice[zeroSlice].row[zeroRow - 1].column[zeroColumn].value;
     }
 
-    if(slice[zeroSlice + 1].row[zeroRow].column[zeroColumn].value != null){
+    if(slice[zeroSlice + 1] != undefined && slice[zeroSlice + 1].row[zeroRow].column[zeroColumn].value != null){
         total += slice[zeroSlice + 1].row[zeroRow].column[zeroColumn].value;
     }
 
-    if(slice[zeroSlice - 1].row[zeroRow].column[zeroColumn].value != null){
+    if(slice[zeroSlice - 1] != undefined && slice[zeroSlice - 1].row[zeroRow].column[zeroColumn].value != null){
         total += slice[zeroSlice - 1].row[zeroRow].column[zeroColumn].value;
     }
 
