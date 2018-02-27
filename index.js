@@ -9,17 +9,12 @@ const app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-app.get('/', function (req, res) {
-    res.send('Hello World!');
-});
-
 app.post('/', function (req, res) {
-    res.send("localhost:3000\nAnswer : " +  createCubes(req.body.slice));
-    createCubes(req.body.slice)
+    res.send("Result: " +  addAdjacentCubes(req.body.slice));
 });
 
-
-function createCubes(slice) {
+// Finds the location of the cubes
+function findZeroLocation(slice) {
     var zeroSlice;
     var zeroRow;
     var zeroColumn;
@@ -31,42 +26,50 @@ function createCubes(slice) {
                     zeroSlice = i;
                     zeroRow = j;
                     zeroColumn = k;
+
                 }
             }
         }
     }
 
-    console.log("test: "+ zeroSlice + zeroRow+  zeroColumn)
+    return {zeroSlice: zeroSlice, zeroRow: zeroRow, zeroColumn: zeroColumn};
+}
 
+//Adds all the adjacent sides
+function addAdjacentCubes(slice) {
+    var cube = findZeroLocation(slice);
     var total = 0;
 
-    if(slice[zeroSlice].row[zeroRow].column[zeroColumn + 1].value != null){
-        total += slice[zeroSlice].row[zeroRow].column[zeroColumn + 1].value;
+    //Add Right
+    if(slice[cube.zeroSlice].row[cube.zeroRow].column[cube.zeroColumn + 1]!= undefined && slice[cube.zeroSlice].row[cube.zeroRow].column[cube.zeroColumn + 1].value != null){
+        total += slice[cube.zeroSlice].row[cube.zeroRow].column[cube.zeroColumn + 1].value;
+    }
+    //Add Left
+    if(slice[cube.zeroSlice].row[cube.zeroRow].column[cube.zeroColumn - 1] != undefined && slice[cube.zeroSlice].row[cube.zeroRow].column[cube.zeroColumn - 1].value != null){
+        total += slice[cube.zeroSlice].row[cube.zeroRow].column[cube.zeroColumn - 1].value;
     }
 
-    if(slice[zeroSlice].row[zeroRow].column[zeroColumn - 1].value != null){
-        total += slice[zeroSlice].row[zeroRow].column[zeroColumn - 1].value;
+    //Add Down
+    if((slice[cube.zeroSlice].row[cube.zeroRow + 1] != undefined ) && slice[cube.zeroSlice].row[cube.zeroRow + 1].column[cube.zeroColumn].value != null){
+        total += slice[cube.zeroSlice].row[cube.zeroRow + 1].column[cube.zeroColumn].value;
     }
 
-    if((slice[zeroSlice].row[zeroRow + 1] != undefined ) && slice[zeroSlice].row[zeroRow + 1].column[zeroColumn].value != null){
-        total += slice[zeroSlice].row[zeroRow + 1].column[zeroColumn].value;
+    //Add Up
+    if((slice[cube.zeroSlice].row[cube.zeroRow - 1] != undefined ) && slice[cube.zeroSlice].row[cube.zeroRow - 1].column[cube.zeroColumn ].value != null){
+        total += slice[cube.zeroSlice].row[cube.zeroRow - 1].column[cube.zeroColumn].value;
     }
 
-    if((slice[zeroSlice].row[zeroRow - 1] != undefined ) && slice[zeroSlice].row[zeroRow - 1].column[zeroColumn ].value != null){
-        total += slice[zeroSlice].row[zeroRow - 1].column[zeroColumn].value;
+    //Add Back
+    if(slice[cube.zeroSlice + 1] != undefined && slice[cube.zeroSlice + 1].row[cube.zeroRow].column[cube.zeroColumn].value != null){
+        total += slice[cube.zeroSlice + 1].row[cube.zeroRow].column[cube.zeroColumn].value;
     }
 
-    if(slice[zeroSlice + 1] != undefined && slice[zeroSlice + 1].row[zeroRow].column[zeroColumn].value != null){
-        total += slice[zeroSlice + 1].row[zeroRow].column[zeroColumn].value;
+    //Add Forward
+    if(slice[cube.zeroSlice - 1] != undefined && slice[cube.zeroSlice - 1].row[cube.zeroRow].column[cube.zeroColumn].value != null){
+        total += slice[cube.zeroSlice - 1].row[cube.zeroRow].column[cube.zeroColumn].value;
     }
 
-    if(slice[zeroSlice - 1] != undefined && slice[zeroSlice - 1].row[zeroRow].column[zeroColumn].value != null){
-        total += slice[zeroSlice - 1].row[zeroRow].column[zeroColumn].value;
-    }
-
-    console.log("answer: "+ total);
     return total;
-
 }
 
 
